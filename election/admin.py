@@ -1,33 +1,16 @@
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 from django.contrib import admin
 from django.contrib.sites.shortcuts import get_current_site
-from django.core import mail
-from django.template.loader import render_to_string
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Queries, Candidate, Position, Election, Vote, Voter
+from .models import Queries, Candidate, Position, Election, Vote, Voter, PassCodeEmails
 from .resources import VoterResource
-
 # Register your models here.
-
+from .tasks import create_emails
 
 admin.site.site_header = "ESUG Admin"
 admin.site.site_title = "ESUG Voter Admin"
 admin.site.index_title = "ESUG Voter Admin"
-
-
-def pass_code_email(connection, name, pass_code, email_subject, template_name, to_email, current_site, path):
-    message = render_to_string(template_name=template_name, context={
-        'pass_code': pass_code,
-        'name': name,
-        'domain': current_site.domain,
-        'path': path
-    }).strip()
-
-    email = mail.EmailMessage(subject=email_subject, body=message, to=[to_email],
-                              from_email="ec.esug.legon@gmail.com", connection=connection)
-    email.content_subtype = "html"
-    return email
 
 
 @admin.register(Queries)
@@ -71,20 +54,8 @@ class VoterAdmin(ImportExportModelAdmin):
 
     def email_pass_codes(self, request, queryset):
         current_site = get_current_site(request)
-        connection = mail.get_connection()
-        connection.open()
-        emails = []
-        for voter in queryset:
-            email = pass_code_email(connection=connection, name=voter.full_name, pass_code=voter.pass_code,
-                                    email_subject="Voting passcode",
-                                    template_name="election/email_pass_code.html",
-                                    to_email=voter.email, current_site=current_site, path='vote')
-            # emails.append(email)
-            email.send(fail_silently=False)
-            print(voter.email)
-
-        # connection.send_messages(emails)
-        connection.close()
+        create_emails.delay(domain=current_site.domain,
+                            queryset=list(queryset.values('full_name', 'email', 'pass_code')))
 
     email_pass_codes.short_description = "Send selected voters their pass code"
 
@@ -92,3 +63,8 @@ class VoterAdmin(ImportExportModelAdmin):
 @admin.register(Vote)
 class VoteAdmin(admin.ModelAdmin):
     list_display = ('voter', 'voted_at', 'candidate')
+
+
+@admin.register(PassCodeEmails)
+class PassCodeEmailsAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email')

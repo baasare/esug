@@ -2,7 +2,6 @@ import random
 import secrets
 import string
 
-from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -87,7 +86,7 @@ class Candidate(models.Model):
 
 class Voter(models.Model):
     full_name = models.CharField(_('full name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=False)
     pass_code = models.CharField(_('pass code'), max_length=30, blank=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
 
@@ -117,3 +116,10 @@ class Vote(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name="votes")
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     voted_at = models.DateTimeField(auto_now_add=True)
+
+
+class PassCodeEmails(models.Model):
+    email = models.EmailField()
+    full_name = models.CharField(max_length=200)
+    pass_code = models.CharField(max_length=200)
+    domain = models.CharField(max_length=200)
