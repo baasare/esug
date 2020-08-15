@@ -1,0 +1,81 @@
+{% extends 'election/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Engineering Students of University of Ghana - Results
+{% endblock %}
+
+
+
+{% block content %}
+
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Votes</h2>
+                    <ol>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li>Results</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+
+        <section id="team" class="team section-bg">
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    {% include "snippets/messages.html" %}
+                </div>
+            </div>
+            {% for position, candidates in candidates.items %}
+                <div class="container" data-aos="fade-up">
+                    <br>
+                    <div class="section-title">
+                        <h2>{{ position }}</h2>
+                    </div>
+
+                    <div class="row justify-content-around">
+
+                        {% for candidate in candidates %}
+                            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up"
+                                 data-aos-delay="100">
+                                <div class="member">
+                                    <div class="member-img">
+                                        <img src="{{ candidate.avatar.url }}" class="img-fluid"
+                                             alt="" style="height: 170px;width: 350px;">
+                                        <div class="social">
+                                            <span>{{ candidate.get_course_offering_display }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="member-info">
+                                        <h4>{{ candidate.full_name }}</h4>
+                                        <p>
+                                        <h2 style="display: inline;">
+                                            <div class="count-box">
+                                                <h2 data-toggle="counter-up">{{ candidate.votes.count }}</h2>
+                                            </div>
+                                        </h2>
+                                        {% if candidate.votes.count > 1 %}
+                                            votes
+                                        {% else %}
+                                            vote
+                                        {% endif %} </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% endfor %}
+        </section><!-- End Team Section -->
+
+    </main><!-- End #main -->
+
+{% endblock %}

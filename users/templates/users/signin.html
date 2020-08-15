@@ -1,0 +1,65 @@
+{% extends 'users/auth_base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    <header id="authentication" class="" style="background: #f5f8fd;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <header class="section-header">
+                        <a href="{% url 'index' %}"><h3>ESUG</h3></a>
+                    </header>
+                    {% include "snippets/messages.html" %}
+                    <br>
+                    <div class="box">
+                        <div class="icon" style="background: #fceef3;"> <i class="ri-account-pin-circle-line" style="color: #ff689b;"></i></i></div>
+                        <h4 class="title"><a href="">Login</a></h4>
+                        <div class="text-danger">
+                            <small> {{ error }}</small>
+                        </div>
+                            <form class="form-signin" name="form" action="{% url 'login' %}" method="POST">
+
+
+                        {% csrf_token %}
+                        <div class="form-label-group">
+                            <input type="text" id="id_username" class="form-control" placeholder="Email"
+                                   name="username"
+                                   {% if form.username.value != None %}value="{{ form.username.value|stringformat:'s' }}"{% endif %}
+                                   required autofocus><br>
+                            <div class="text-danger">
+                                <small> {{ form.username.errors }}</small>
+                            </div>
+                        </div>
+
+                        <div class="form-label-group">
+                            <input type="password" id="id_password" class="form-control"
+                                   placeholder="Passcode"
+                                   name="password"
+                                   {% if form.password.value != None %}value="{{ form.password.value|stringformat:'s' }}"{% endif %}
+                                   required><br>
+                            <div class="text-danger">
+                                <small> {{ form.password.errors }}</small>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">LOGIN
+                        </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

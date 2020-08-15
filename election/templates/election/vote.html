@@ -1,0 +1,181 @@
+{% extends 'election/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Engineering Students of University of Ghana - Aspirants
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team section-bg">
+        <div class="container" data-aos="fade-up">
+
+            <br>
+            <br>
+            <div class="section-title">
+                <h2>Ballot</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    {% include "snippets/messages.html" %}
+                </div>
+            </div>
+
+            <form action="{% url "vote" %}" method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col">
+
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="pass_code" id="subject"
+                                   placeholder="Secret Code" required/>
+                            <small id="pass_code_help" class="form-text text-muted">Enter your unique passcode.</small>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% for position, candidates in candidates.items %}
+                    <div class="section-title">
+                        <h4>{{ position }}</h4>
+                    </div>
+
+
+                    <div class="row justify-content-around align-items-center">
+                        {% for candidate in candidates %}
+
+                            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                                <div class="member d-flex align-items-start">
+                                    <div class="pic"><img src="{{ candidate.avatar.url }}" class="img-fluid"
+                                                          alt="">
+                                    </div>
+                                    <div class="member-info">
+                                        <h4>{{ candidate.full_name }}</h4>
+                                        <input style="width:2em;height:2em;" class="form-check-input"
+                                               type="radio" name="{{ position }}"
+                                               id="candidate{{ forloop.counter }}"
+                                               value="{{ candidate.id }}">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+
+                <div class="text-center" id="vote">
+                    <button type="submit" class="btn-get-started">Vote</button>
+                </div>
+            </form>
+        </div>
+    </section><!-- End Team Section -->
+
+
+
+    <style>
+        /*--------------------------------------------------------------
+    # Team
+    --------------------------------------------------------------*/
+        .team .member {
+            position: relative;
+            box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .team .member .pic {
+            overflow: hidden;
+            width: 100px;
+            border-radius: 4px%;
+        }
+
+        .team .member .pic img {
+            transition: ease-in-out 0.3s;
+        }
+
+        .team .member:hover img {
+            transform: scale(1.1);
+        }
+
+        .team .member .member-info {
+            padding-left: 30px;
+        }
+
+        .team .member h4 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 20px;
+            color: #05579e;
+        }
+
+        .team .member span {
+            display: block;
+            font-size: 15px;
+            padding-bottom: 10px;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .team .member span::after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 50px;
+            height: 1px;
+            background: #bfe0fd;
+            bottom: 0;
+            left: 0;
+        }
+
+        .team .member p {
+            margin: 10px 0 0 0;
+            font-size: 14px;
+        }
+
+        .team .member .social {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .team .member .social a {
+            transition: ease-in-out 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            width: 32px;
+            height: 32px;
+            background: #ecf6fe;
+            color: #0665b7;
+        }
+
+        .team .member .social a i {
+            font-size: 16px;
+            margin: 0 2px;
+        }
+
+        .team .member .social a:hover {
+            background: #0880e8;
+            color: #fff;
+        }
+
+        .team .member .social a + a {
+            margin-left: 8px;
+        }
+
+    </style>
+
+{% endblock %}

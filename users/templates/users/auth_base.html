@@ -1,0 +1,99 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+
+    <!-- Favicons -->
+    <link href="{% static 'img/esug_logo.png' %}" rel="icon">
+    <link href="{% static 'img/esug_logo.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,600,700,700i|Montserrat:300,400,500,600,700"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!--==========================
+  Services Section
+============================-->
+{% block content %}
+
+{% endblock %}
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<!-- Uncomment below i you want to use a preloader -->
+<!-- <div id="preloader"></div> -->
+
+<!-- JavaScript Libraries -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/jquery/jquery-migrate.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Template Main Javascript File -->
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $("#passwordHelp").hide();
+
+        $(".toast").toast('show');
+    });
+
+    function displayPassword() {
+        var z = document.getElementById("inputPassword");
+        if (z.type === "password") {
+            z.type = "text";
+        } else {
+            z.type = "password";
+        }
+    }
+
+    function focusFunction() {
+        $("#passwordHelp").show();
+    }
+
+    function blurFunction() {
+        $("#passwordHelp").hide();
+    }
+
+    function myFunction() {
+        const x = document.getElementById("id_password1");
+        const y = document.getElementById("id_password2");
+
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+
+        if (y.type === "password") {
+            y.type = "text";
+        } else {
+            y.type = "password";
+        }
+    }
+
+</script>
+</body>
+</html>
+
+

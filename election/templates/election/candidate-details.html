@@ -1,0 +1,69 @@
+{% extends 'election/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Engineering Students of University of Ghana - {{ candidate.full_name }}
+{% endblock %}
+
+
+
+{% block content %}
+
+
+    <main id="main">
+
+        <!-- ======= Breadcrumbs ======= -->
+        <section id="breadcrumbs" class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Portfolio Details</h2>
+                    <ol>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li>{{ candidate.full_name }} Details</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+        <!-- ======= Portfolio Details Section ======= -->
+        <section id="portfolio-details" class="portfolio-details">
+            <div class="container" data-aos="fade-up">
+
+                <div class="portfolio-details-container">
+
+                    <div class="owl-carousel portfolio-details-carousel">
+{#                        <img src="{% static 'img/portfolio/portfolio-details-1.jpg' %}" class="img-fluid" alt="">#}
+{#                        <img src="{% static 'img/portfolio/portfolio-details-1.jpg' %}" class="img-fluid" alt="">#}
+{#                        <img src="{% static 'img/portfolio/portfolio-details-1.jpg' %}" class="img-fluid" alt="">#}
+                        <img src="{{ candidate.avatar.url }}" class="img-fluid" alt="">
+                    </div>
+
+                    <div class="portfolio-info">
+                        <h3>Candidate information</h3>
+                        <ul>
+                            <li><strong>Name</strong>: {{ candidate.full_name }}</li>
+                            <li><strong>Level</strong>: {{ candidate.get_level_display  }}</li>
+                            <li><strong>Course</strong>: {{ candidate.get_course_offering_display  }}</li>
+                            <li><strong>Aspiring Position</strong>: {{ candidate.position }}</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="portfolio-description">
+                    <h2>{{ candidate.full_name }}'s Bio</h2>
+                    <p>
+                        {{ candidate.bio }}
+                    </p>
+                </div>
+
+            </div>
+        </section><!-- End Portfolio Details Section -->
+
+    </main><!-- End #main -->
+
+
+
+{% endblock %}
