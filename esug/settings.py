@@ -201,6 +201,11 @@ if os.getcwd() == '/app':
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+    BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
+    BROKER_TRANSPORT_OPTIONS = {
+        "max_connections": 2,
+    }
+
     CACHES = {
         "default": {
             "BACKEND": "redis_cache.RedisCache",
