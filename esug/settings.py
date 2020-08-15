@@ -140,9 +140,16 @@ USE_L10N = True
 USE_TZ = True
 
 # CELERY STUFF
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_TIMEZONE = 'Africa/Accra'
+
+if os.getcwd() == '/app':
+    BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
+    BROKER_TRANSPORT_OPTIONS = {
+        "max_connections": 2,
+    }
+else:
+    BROKER_URL = 'redis://localhost:6379'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+    CELERY_TIMEZONE = 'Africa/Accra'
 
 # Email Configuration
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -201,14 +208,9 @@ if os.getcwd() == '/app':
     STATIC_ROOT = 'staticfiles'
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
-    BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
-    BROKER_TRANSPORT_OPTIONS = {
-        "max_connections": 2,
-    }
-
-    CACHES = {
-        "default": {
-            "BACKEND": "redis_cache.RedisCache",
-            "LOCATION": os.environ.get('REDIS_URL'),
-        }
-    }
+    # CACHES = {
+    #     "default": {
+    #         "BACKEND": "redis_cache.RedisCache",
+    #         "LOCATION": os.environ.get('REDIS_URL'),
+    #     }
+    # }
