@@ -1,9 +1,9 @@
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.sites.shortcuts import get_current_site
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Queries, Candidate, Position, Election, Vote, Voter, PassCodeEmails
+from .models import Queries, Candidate, Position, Election, Vote, Voter, PassCodeEmail
 from .resources import VoterResource
 # Register your models here.
 from .tasks import create_emails
@@ -56,6 +56,7 @@ class VoterAdmin(ImportExportModelAdmin):
         current_site = get_current_site(request)
         create_emails.delay(domain=current_site.domain,
                             queryset=list(queryset.values('full_name', 'email', 'pass_code')))
+        messages.success(request, "Emails scheduled for sending")
 
     email_pass_codes.short_description = "Send selected voters their pass code"
 
@@ -65,6 +66,6 @@ class VoteAdmin(admin.ModelAdmin):
     list_display = ('voter', 'voted_at', 'candidate')
 
 
-@admin.register(PassCodeEmails)
-class PassCodeEmailsAdmin(admin.ModelAdmin):
+@admin.register(PassCodeEmail)
+class PassCodeEmailAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email')

@@ -140,7 +140,6 @@ USE_L10N = True
 USE_TZ = True
 
 # CELERY STUFF
-
 if os.getcwd() == '/app':
     BROKER_URL = os.environ.get("REDISCLOUD_URL", "django://")
     BROKER_TRANSPORT_OPTIONS = {
@@ -152,20 +151,12 @@ else:
     CELERY_TIMEZONE = 'Africa/Accra'
 
 # Email Configuration
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
-
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = config('SENDGRID_API_KEY')
-SENDGRID_SANDBOX_MODE_IN_DEBUG = True
-
-# EMAIL_BACKEND = 'sgbackend.SendGridBackend'
-# SENDGRID_API_KEY = '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'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

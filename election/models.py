@@ -85,7 +85,7 @@ class Candidate(models.Model):
 
 
 class Voter(models.Model):
-    full_name = models.CharField(_('full name'), max_length=150, blank=True)
+    full_name = models.CharField(_('full name'), max_length=150, blank=True, null=True)
     email = models.EmailField(_('email address'), unique=False)
     pass_code = models.CharField(_('pass code'), max_length=30, blank=True)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -118,7 +118,7 @@ class Vote(models.Model):
     voted_at = models.DateTimeField(auto_now_add=True)
 
 
-class PassCodeEmails(models.Model):
+class PassCodeEmail(models.Model):
     email = models.EmailField()
     full_name = models.CharField(max_length=200)
     pass_code = models.CharField(max_length=200)
